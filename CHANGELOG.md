@@ -1,3 +1,6 @@
+### 6.4.1
+- [Issue 82](https://github.com/shamblett/cbor/issues/82)
+
 ### 6.4.0
 - [Issue 80](https://github.com/shamblett/cbor/issues/80)
 

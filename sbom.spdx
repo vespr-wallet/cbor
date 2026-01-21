@@ -5,19 +5,19 @@ DocumentName: cbor
 DocumentNamespace: https://pub.dev/packages/cbor
 LicenseListVersion: 3.8
 Creator: Tool: https://pub.dev/packages/sbom
-Created: 2026-01-18T14:00:03Z
+Created: 2026-01-21T10:49:39Z
 CreatorComment: <text>Please refer to the AUTHORS file for contributor/creation details</text>
 
 
 PackageName: cbor
 SPDXID: SPDXRef-Package-cbor
-PackageVersion: 6.4.0
+PackageVersion: 6.4.1
 PackageFileName: cbor
 PackageSupplier: NOASSERTION
 PackageOriginator: NOASSERTION
 PackageDownloadLocation: https://pub.dev/packages/cbor
 FilesAnalyzed: true
-PackageVerificationCode: 6e5b216bffa2ed64a25ca9405587664de6fdba13
+PackageVerificationCode: 86ce3dab224771d746e1fbb8cadba2d2db56ff00
 PackageHomePage: https://pub.dev/packages/cbor
 PackageLicenseConcluded: MIT
 PackageLicenseInfoFromFiles: NOASSERTION
@@ -200,7 +200,7 @@ FileCopyrightText: NOASSERTION
 FileName: lib/src/value/int.dart
 SPDXID: SPDXRef-int-19
 FileType: SOURCE
-FileChecksum: SHA1: 1b2f2a9f057c88db3b6e389ec3b33b6e12414227
+FileChecksum: SHA1: c02673baa59d0e3c0f5e14ab2c41b8c6cdccc753
 LicenseConcluded: NOASSERTION
 LicenseInfoInFile: NOASSERTION
 FileCopyrightText: NOASSERTION
@@ -209,7 +209,7 @@ FileCopyrightText: NOASSERTION
 FileName: lib/src/value/internal.dart
 SPDXID: SPDXRef-internal-20
 FileType: SOURCE
-FileChecksum: SHA1: c02673baa59d0e3c0f5e14ab2c41b8c6cdccc753
+FileChecksum: SHA1: e772e3e2fb1259764c6f7cc2a46564b787b8773d
 LicenseConcluded: NOASSERTION
 LicenseInfoInFile: NOASSERTION
 FileCopyrightText: NOASSERTION
@@ -281,7 +281,7 @@ FileCopyrightText: NOASSERTION
 FileName: pubspec.yaml
 SPDXID: SPDXRef-pubspec-28
 FileType: TEXT
-FileChecksum: SHA1: b68bdaffc4da1134d8e09238f7fdf45849587b93
+FileChecksum: SHA1: 1f9376ee24985ede08c8122bdd7dceecc1b69666
 LicenseConcluded: NOASSERTION
 LicenseInfoInFile: NOASSERTION
 FileCopyrightText: NOASSERTION
