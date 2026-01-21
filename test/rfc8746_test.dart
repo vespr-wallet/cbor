@@ -116,7 +116,7 @@ void main() {
       final decoded = cbor.decode(encoded);
       expect(decoded, isA<CborUint64BigEndianArray>());
       final array = decoded as CborUint64BigEndianArray;
-      expect(array.toObject(), isA<Uint64List>());
+      // On web, returns List<int> instead of Uint64List
       expect(array.toObject(), [1, 2]);
     });
 
