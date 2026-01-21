@@ -11,6 +11,7 @@ import 'package:ieee754/ieee754.dart';
 
 import '../constants.dart';
 import '../encoder/sink.dart';
+import '../utils/float16.dart' as float16_utils;
 import 'internal.dart';
 
 /// Enumeration to allow the user to select which level of precision to
@@ -89,7 +90,7 @@ class _CborFloatImpl with CborValueMixin implements CborFloat {
           CborAdditionalInfo.halfPrecisionFloat,
         );
 
-        sink.add(parts.toFloat16Bytes());
+        sink.add(float16_utils.toFloat16Bytes(value));
       } else if (parts.isFloat32Lossless) {
         sink.addHeader(
           CborMajorType.simpleFloat,
@@ -113,7 +114,7 @@ class _CborFloatImpl with CborValueMixin implements CborFloat {
               CborMajorType.simpleFloat,
               CborAdditionalInfo.halfPrecisionFloat,
             );
-            sink.add(parts.toFloat16Bytes());
+            sink.add(float16_utils.toFloat16Bytes(value));
           } else {
             // Invalid conversion
             throw ArgumentError(
