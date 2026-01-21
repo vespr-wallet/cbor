@@ -7,11 +7,27 @@
 
 import 'dart:typed_data';
 
-/// Custom half-precision (float16) encoding that works correctly on all platforms.
+/// Custom half-precision (float16) encoding/decoding that works correctly on all platforms.
 ///
-/// The ieee754 package's `toFloat16Bytes()` uses `ByteData.setInt16()` which
-/// behaves incorrectly on JS where bitwise operators are limited to 32-bit
-/// signed integers. This implementation constructs bytes directly.
+/// ## Why custom implementation?
+///
+/// The ieee754 package has issues on JavaScript platforms:
+///
+/// ### Encoding (`toFloat16Bytes`)
+/// The ieee754 package uses `ByteData.setInt16()` which behaves incorrectly on JS
+/// where bitwise operators are limited to 32-bit signed integers. When the sign bit
+/// is set (negative numbers, negative zero), the value gets sign-extended incorrectly.
+///
+/// ### Decoding (`fromFloat16Bytes`)
+/// The ieee754 package uses `ByteData.getInt16()` to read the 16-bit value, which
+/// on JS interprets the bytes as a signed integer. For values with the high bit set
+/// (negative numbers, large positive exponents), this produces incorrect results.
+/// For example, -4.0 (bytes 0xC400) gets decoded as -33554428 instead of -4.0.
+///
+/// This implementation avoids these issues by:
+/// - Constructing bytes directly without using setInt16/getInt16
+/// - Using only unsigned byte operations that work consistently across platforms
+/// - Building the 16-bit value from individual bytes using shifts and OR operations
 
 /// Converts a double to IEEE 754 half-precision (16-bit) bytes in big-endian order.
 ///
@@ -101,13 +117,18 @@ bool isFloat16Lossless(double value) {
 
   // Convert to float16 and back, check if value is preserved
   final halfBytes = toFloat16Bytes(value);
-  final reconstructed = _float16BytesToDouble(halfBytes);
+  final reconstructed = fromFloat16Bytes(halfBytes);
 
   return reconstructed == value;
 }
 
-/// Converts half-precision bytes back to double (for lossless check).
-double _float16BytesToDouble(List<int> bytes) {
+/// Converts IEEE 754 half-precision (16-bit) bytes to a double.
+///
+/// Expects 2 bytes in big-endian order `[highByte, lowByte]`.
+///
+/// This is a cross-platform implementation that avoids `ByteData.getInt16()`
+/// which behaves incorrectly on JS for values with the high bit set.
+double fromFloat16Bytes(List<int> bytes) {
   final halfValue = (bytes[0] << 8) | bytes[1];
 
   final sign = (halfValue >> 15) & 1;

@@ -9,7 +9,8 @@ import 'dart:typed_data';
 
 import 'package:cbor/cbor.dart';
 import 'package:cbor/src/value/internal.dart';
-import 'package:ieee754/ieee754.dart';
+
+import '../utils/float16.dart' as float16_utils;
 
 /// Base class for all Typed Arrays
 sealed class CborTypedArray extends CborBytesImpl {
@@ -615,11 +616,8 @@ class CborFloat16BigEndianArray extends CborTypedArray {
     final list = <double>[];
     final data = ByteData.sublistView(Uint8List.fromList(bytes));
     for (var i = 0; i < bytes.length; i += 2) {
-      final chunk = Uint8List.fromList([
-        data.getUint8(i),
-        data.getUint8(i + 1),
-      ]);
-      list.add(FloatParts.fromFloat16Bytes(chunk).toDouble());
+      final chunk = [data.getUint8(i), data.getUint8(i + 1)];
+      list.add(float16_utils.fromFloat16Bytes(chunk));
     }
     return list;
   }
@@ -639,12 +637,9 @@ class CborFloat16LittleEndianArray extends CborTypedArray {
     final list = <double>[];
     final data = ByteData.sublistView(Uint8List.fromList(bytes));
     for (var i = 0; i < bytes.length; i += 2) {
-      // Reverse for Little Endian as library expects Big Endian
-      final chunk = Uint8List.fromList([
-        data.getUint8(i + 1),
-        data.getUint8(i),
-      ]);
-      list.add(FloatParts.fromFloat16Bytes(chunk).toDouble());
+      // Reverse for Little Endian as our decoder expects Big Endian
+      final chunk = [data.getUint8(i + 1), data.getUint8(i)];
+      list.add(float16_utils.fromFloat16Bytes(chunk));
     }
     return list;
   }
