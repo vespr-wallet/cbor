@@ -125,6 +125,10 @@ abstract class CborValue {
       return CborNull();
     } else if (object is CborValue) {
       return object;
+    } else if (object is double && (object.isNaN || object.isInfinite)) {
+      // Handle special double values first: on JS, Infinity/NaN might match
+      // 'is int', leading to BigInt.from(infinity) throwing.
+      return CborFloat(object);
     } else if (object is int) {
       return CborSmallInt(object);
     } else if (object is BigInt) {
