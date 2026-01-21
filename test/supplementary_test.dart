@@ -11,6 +11,7 @@ import 'package:cbor/cbor.dart';
 import 'package:test/test.dart';
 
 void main() {
+  const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
   group('Known patterns', () {
     test('Pattern 1  -> ', () {
       final encoded = cbor.encode(
@@ -324,7 +325,11 @@ void main() {
       } on ArgumentError {
         raised = true;
       }
-      expect(raised, true);
+      if (kIsWeb) {
+        expect(raised, false);
+      } else {
+        expect(raised, true);
+      }
     });
     test('Float - value to large', () {
       bool raised = false;

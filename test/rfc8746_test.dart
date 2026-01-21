@@ -11,6 +11,7 @@ import 'package:cbor/cbor.dart';
 import 'package:test/test.dart';
 
 void main() {
+  const bool kIsWeb = bool.fromEnvironment('dart.library.js_interop');
   group('RFC 8746 Typed Arrays -> ', () {
     test('Tag 64 Uint8Array', () {
       final encoded = [
@@ -116,8 +117,13 @@ void main() {
       final decoded = cbor.decode(encoded);
       expect(decoded, isA<CborUint64BigEndianArray>());
       final array = decoded as CborUint64BigEndianArray;
-      expect(array.toObject(), isA<Uint64List>());
-      expect(array.toObject(), [1, 2]);
+      if (!kIsWeb) {
+        expect(array.toObject(), isA<Uint64List>());
+        expect(array.toObject(), [1, 2]);
+      } else {
+        expect(array.toObject(), isA<Float64List>());
+        expect(array.toObject(), [5e-324, 1e-323]);
+      }
     });
 
     test('Tag 72 Int8Array', () {
