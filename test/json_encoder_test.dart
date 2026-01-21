@@ -111,7 +111,10 @@ void main() {
         expect(const CborJsonEncoder().convert(CborFloat(100000.0)), '100000');
       } else {
         expect(encode(100000.0), '100000.0');
-        expect(const CborJsonEncoder().convert(CborFloat(100000.0)), '100000.0');
+        expect(
+          const CborJsonEncoder().convert(CborFloat(100000.0)),
+          '100000.0',
+        );
       }
     });
 

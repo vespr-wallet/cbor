@@ -206,7 +206,13 @@ void main() {
       // On VM/WASM, these are always correctly identified as doubles.
       final encoded = cbor.encode(3.4028234663852886e+38);
       expect(encoded, [0xfa, 0x7f, 0x7f, 0xff, 0xff]);
-      expect(cborEncode(CborFloat(3.4028234663852886e+38)), [0xfa, 0x7f, 0x7f, 0xff, 0xff]);
+      expect(cborEncode(CborFloat(3.4028234663852886e+38)), [
+        0xfa,
+        0x7f,
+        0x7f,
+        0xff,
+        0xff,
+      ]);
     });
 
     test('1.0e+300', () {
@@ -215,7 +221,17 @@ void main() {
       // On VM/WASM, these are always correctly identified as doubles.
       final encoded = cbor.encode(1.0e+300);
       expect(encoded, [0xfb, 0x7e, 0x37, 0xe4, 0x3c, 0x88, 0x00, 0x75, 0x9c]);
-      expect(cborEncode(CborFloat(1.0e+300)), [0xfb, 0x7e, 0x37, 0xe4, 0x3c, 0x88, 0x00, 0x75, 0x9c]);
+      expect(cborEncode(CborFloat(1.0e+300)), [
+        0xfb,
+        0x7e,
+        0x37,
+        0xe4,
+        0x3c,
+        0x88,
+        0x00,
+        0x75,
+        0x9c,
+      ]);
     });
 
     test('5.960464477539063e-8', () {

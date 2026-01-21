@@ -263,7 +263,11 @@ class CborUint64LittleEndianArray extends CborTypedArray {
         final value = list[i];
         // Little endian: low bytes first
         data.setUint32(i * 8, value & 0xFFFFFFFF, Endian.little);
-        data.setUint32(i * 8 + 4, (value ~/ 0x100000000) & 0xFFFFFFFF, Endian.little);
+        data.setUint32(
+          i * 8 + 4,
+          (value ~/ 0x100000000) & 0xFFFFFFFF,
+          Endian.little,
+        );
       } else {
         data.setUint64(i * 8, list[i], Endian.little);
       }
