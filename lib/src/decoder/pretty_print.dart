@@ -7,9 +7,7 @@
 
 import 'dart:convert';
 
-import 'package:ieee754/ieee754.dart';
-
-import '../utils/float16.dart' as float16_utils;
+import '../utils/float_utils.dart' as float_utils;
 import 'stage1.dart';
 import '../constants.dart';
 import '../value/value.dart';
@@ -141,17 +139,17 @@ class _PrettyPrint implements Sink<RawValue> {
             break;
           case CborAdditionalInfo.halfPrecisionFloat:
             writer.write(
-              '(${float16_utils.fromFloat16Bytes(x.header.dataBytes)})',
+              '(${float_utils.fromFloat16Bytes(x.header.dataBytes)})',
             );
             break;
           case CborAdditionalInfo.singlePrecisionFloat:
             writer.write(
-              '(${FloatParts.fromFloat32Bytes(x.header.dataBytes).toDouble()})',
+              '(${float_utils.fromFloat32Bytes(x.header.dataBytes)})',
             );
             break;
           case CborAdditionalInfo.doublePrecisionFloat:
             writer.write(
-              '(${FloatParts.fromFloat64Bytes(x.header.dataBytes).toDouble()})',
+              '(${float_utils.fromFloat64Bytes(x.header.dataBytes)})',
             );
             break;
           case CborAdditionalInfo.breakStop:

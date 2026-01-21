@@ -92,7 +92,9 @@ class _CborSmallIntImpl with CborValueMixin implements CborSmallInt {
   void encode(EncodeSink sink) {
     sink.addTags(tags);
 
-    if (!value.isNegative) {
+    // Note: On JS, negative zero (-0.0) may pass isNegative but should be
+    // encoded as positive zero. Check for zero explicitly.
+    if (value == 0 || !value.isNegative) {
       sink.addHeaderInfo(0, Arg.int(value));
     } else {
       sink.addHeaderInfo(1, Arg.int((~BigInt.from(value)).toInt()));

@@ -175,3 +175,60 @@ double _pow2(int exp) {
     return result;
   }
 }
+
+/// Check if a double can be represented losslessly as a single-precision (32-bit) float.
+///
+/// This is a cross-platform implementation.
+bool isFloat32Lossless(double value) {
+  // Special values are always lossless
+  if (value.isNaN || value.isInfinite || value == 0.0) {
+    return true;
+  }
+
+  // Convert to float32 and back, check if value is preserved
+  final bytes = toFloat32Bytes(value);
+  final reconstructed = fromFloat32Bytes(bytes);
+
+  return reconstructed == value;
+}
+
+/// Check if a double can be represented losslessly as a double-precision (64-bit) float.
+///
+/// This always returns true since Dart doubles are already 64-bit IEEE 754 floats.
+bool isFloat64Lossless(double value) {
+  return true;
+}
+
+/// Converts a double to IEEE 754 single-precision (32-bit) bytes in big-endian order.
+///
+/// Returns a list of 4 bytes.
+List<int> toFloat32Bytes(double value) {
+  final bytes = Uint8List(4);
+  ByteData.view(bytes.buffer).setFloat32(0, value, Endian.big);
+  return bytes;
+}
+
+/// Converts IEEE 754 single-precision (32-bit) bytes to a double.
+///
+/// Expects 4 bytes in big-endian order.
+double fromFloat32Bytes(List<int> bytes) {
+  final data = ByteData.view(Uint8List.fromList(bytes).buffer);
+  return data.getFloat32(0, Endian.big);
+}
+
+/// Converts a double to IEEE 754 double-precision (64-bit) bytes in big-endian order.
+///
+/// Returns a list of 8 bytes.
+List<int> toFloat64Bytes(double value) {
+  final bytes = Uint8List(8);
+  ByteData.view(bytes.buffer).setFloat64(0, value, Endian.big);
+  return bytes;
+}
+
+/// Converts IEEE 754 double-precision (64-bit) bytes to a double.
+///
+/// Expects 8 bytes in big-endian order.
+double fromFloat64Bytes(List<int> bytes) {
+  final data = ByteData.view(Uint8List.fromList(bytes).buffer);
+  return data.getFloat64(0, Endian.big);
+}

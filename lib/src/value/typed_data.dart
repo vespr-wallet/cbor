@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import 'package:cbor/cbor.dart';
 import 'package:cbor/src/value/internal.dart';
 
-import '../utils/float16.dart' as float16_utils;
+import '../utils/float_utils.dart' as float_utils;
 
 /// Base class for all Typed Arrays
 sealed class CborTypedArray extends CborBytesImpl {
@@ -186,9 +186,12 @@ class CborUint32LittleEndianArray extends CborTypedArray {
 }
 
 /// Platform detection constants
-const bool _kIsJs = bool.fromEnvironment('dart.library.js_interop');
+/// Using `identical(0, 0.0)` which returns true only on JS where int/double are same.
+final bool _kIsJs = identical(0, 0.0);
+// For WASM detection, we can't use identical check. WASM doesn't have the setUint64 issue
+// but doesn't have int/double conflation either. Use dart.tool.dart2wasm for now.
 const bool _kIsWasm = bool.fromEnvironment('dart.tool.dart2wasm');
-const bool _kIsWeb = _kIsJs || _kIsWasm;
+final bool _kIsWeb = _kIsJs || _kIsWasm;
 
 /// uint64 big endian
 class CborUint64BigEndianArray extends CborTypedArray {
@@ -617,7 +620,7 @@ class CborFloat16BigEndianArray extends CborTypedArray {
     final data = ByteData.sublistView(Uint8List.fromList(bytes));
     for (var i = 0; i < bytes.length; i += 2) {
       final chunk = [data.getUint8(i), data.getUint8(i + 1)];
-      list.add(float16_utils.fromFloat16Bytes(chunk));
+      list.add(float_utils.fromFloat16Bytes(chunk));
     }
     return list;
   }
@@ -639,7 +642,7 @@ class CborFloat16LittleEndianArray extends CborTypedArray {
     for (var i = 0; i < bytes.length; i += 2) {
       // Reverse for Little Endian as our decoder expects Big Endian
       final chunk = [data.getUint8(i + 1), data.getUint8(i)];
-      list.add(float16_utils.fromFloat16Bytes(chunk));
+      list.add(float_utils.fromFloat16Bytes(chunk));
     }
     return list;
   }
